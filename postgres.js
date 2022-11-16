@@ -21,7 +21,7 @@ const getUsers = (request, response) => {
 }
 
 const getUsersSale = (request, response) => {
-    pool.query('SELECT * FROM "salesforce.demo__c"', (error, results) =>{
+    pool.query('SELECT * FROM salesforce.demo__c', (error, results) =>{
         if(error) {
             throw error
         }
@@ -40,8 +40,9 @@ const createUser = (request, response) => {
 
 const createUserSalesforce = (request, response) => {
     const {name,first_name, last_name } = request.body
-    pool.query('INSERT INTO "salesforce.demo__c" (name,first_name__c, last_name__c) VALUES ($1,$2,$3) RETURNING *',[name,first_name,last_name], (error, results) => {
+    pool.query('INSERT INTO salesforce.demo__c (name, first_name__c, last_name__c) VALUES ($1,$2,$3) RETURNING *',[name,first_name,last_name], (error, results) => {
         if(error) {
+            console.log(error)
             throw error
         }
         response.status(201).send(`Added User: ${results.rows[0].name}`)
